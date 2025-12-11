@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر | Cyber Ops</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+         :root {
+            --bg-dark: #050a14;
+            --card-bg: #111827;
+            --primary: #8b5cf6;
+            --accent: #10b981;
+            --store: #f43f5e;
+            --text-main: #f3f4f6;
+            --border: rgba(255, 255, 255, 0.05);
+            --gradient: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        /* Nav */
+        
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(5, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            border-bottom: 2px solid var(--primary);
+        }
+        /* Store Header */
+        
+        .page-header {
+            text-align: center;
+            margin: 120px 0 50px;
+            animation: fadeIn 1s ease;
+        }
+        
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-desc {
+            color: #9ca3af;
+        }
+        /* Store Grid */
+        
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+        
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-7px);
+            border-color: var(--store);
+            box-shadow: 0 10px 30px rgba(244, 63, 94, 0.15);
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--store);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .prod-icon {
+            font-size: 3rem;
+            color: var(--store);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .prod-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .prod-desc {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            background: var(--gradient);
+            transition: 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+        
+        .buy-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        /* Contact Form */
+        
+        .contact-section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .contact-box {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            text-align: right;
+        }
+        
+        input,
+        textarea {
+            width: 100%;
+            background: #020617;
+            border: 1px solid #374151;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
+            font-family: monospace;
+        }
+        
+        input:focus,
+        textarea:focus {
+            border-color: var(--store);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-nav">
+        <div class="logo">CYBER.OPS</div>
+        <ul class="nav-links">
+            <li><a href="index.html">قصتي</a></li>
+            <li><a href="tools.html">الترسانة (25)</a></li>
+            <li><a href="store.html" class="active">المتجر</a></li>
+            <li><a href="hub.html">الإنجازات</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title">Cyber Store</h1>
+        <p class="page-desc">منتجات رقمية، كتب، وأدوات حصرية.</p>
+    </div>
+
+    <div class="store-grid">
+
+        <div class="product-card">
+            <span class="price-tag">$10</span>
+            <div class="prod-icon"><i class="fas fa-book-dead"></i></div>
+            <h3 class="prod-title">كتاب: أساسيات الاختراق</h3>
+            <p class="prod-desc">دليل شامل للمبتدئين باللغة العربية. يشرح الشبكات، اللينكس، وأدوات كالي بأسلوب مبسط.</p>
+            <a href="#" class="buy-btn">شراء الآن</a>
+        </div>
+
+        <div class="product-card">
+            <span class="price-tag">$5</span>
+            <div class="prod-icon"><i class="fas fa-file-code"></i></div>
+            <h3 class="prod-title">CheatSheet PDF</h3>
+            <p class="prod-desc">ورقة الغش الذهبية. فيها كل أوامر Nmap, Metasploit, و Burp Suite اللي هتحتاجها في شغلك.</p>
+            <a href="#" class="buy-btn">شراء الآن</a>
+        </div>
+
+        <div class="product-card">
+            <span class="price-tag" style="background:#10b981">مجاني</span>
+            <div class="prod-icon"><i class="fas fa-video" style="color:#10b981"></i></div>
+            <h3 class="prod-title">كورس الشبكات (فيديو)</h3>
+            <p class="prod-desc">محاضرة مدتها ساعة بتشرح إزاي البيانات بتتحرك في الإنترنت وإزاي تعمل Sniffing.</p>
+            <a href="#" class="buy-btn" style="background:#10b981">تحميل مباشر</a>
+        </div>
+
+    </div>
+
+    <div class="contact-section">
+        <h2 style="margin-bottom:20px; color:var(--text-main)">تواصل معي (Contact Me)</h2>
+        <div class="contact-box">
+            <form name="contact" method="POST" data-netlify="true">
+                <label>الاسم:</label>
+                <input type="text" name="name" required placeholder="اكتب اسمك...">
+
+                <label>البريد الإلكتروني:</label>
+                <input type="email" name="email" required placeholder="example@gmail.com">
+
+                <label>الرسالة:</label>
+                <textarea name="message" rows="5" required placeholder="اكتب رسالتك أو استفسارك هنا..."></textarea>
+
+                <button type="submit" class="buy-btn" style="width:auto; padding:10px 40px; margin-top:10px;">إرسال</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

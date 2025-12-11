@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإنجازات | Cyber Ops</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+         :root {
+            --bg-dark: #050a14;
+            --card-bg: #111827;
+            --primary: #8b5cf6;
+            --accent: #10b981;
+            --text-main: #f3f4f6;
+            --border: rgba(255, 255, 255, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        /* Nav */
+        
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(5, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .page-header {
+            text-align: center;
+            margin: 120px 0 50px;
+            animation: fadeIn 1s ease;
+        }
+        
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        /* Grid Layout */
+        
+        .hub-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hub-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            height: 100%;
+            animation: slideUp 0.5s ease backwards;
+        }
+        
+        .hub-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Items Styles */
+        
+        .cert-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-right: 4px solid var(--accent);
+            transition: 0.3s;
+        }
+        
+        .cert-item:hover {
+            transform: translateX(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .uni-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .uni-table th {
+            text-align: right;
+            color: var(--primary);
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .uni-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.9rem;
+        }
+        
+        .grade-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        /* Discord */
+        
+        .discord-box {
+            background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        .discord-btn {
+            background: white;
+            color: #5865F2;
+            padding: 10px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        
+        .discord-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-nav">
+        <div class="logo">CYBER.OPS</div>
+        <ul class="nav-links">
+            <li><a href="index.html">قصتي</a></li>
+            <li><a href="tools.html">الترسانة (25)</a></li>
+            <li><a href="store.html">المتجر</a></li>
+            <li><a href="hub.html" class="active">الإنجازات</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title">Achievements Hub</h1>
+        <p style="color:#9ca3af">سجل الشهادات، المشاريع، والمجتمع.</p>
+    </div>
+
+    <div class="hub-container">
+
+        <div class="hub-card" style="animation-delay: 0.1s">
+            <h3 class="hub-title"><i class="fas fa-certificate" style="color:var(--accent)"></i> الشهادات والمسار</h3>
+
+            <div class="cert-item">
+                <i class="fas fa-check-circle" style="color:var(--accent); font-size:1.5rem"></i>
+                <div>
+                    <h4>Cybersecurity Job Simulation</h4>
+                    <span style="font-size:0.8rem; color:#9ca3af">Forage • Completed</span>
+                </div>
+            </div>
+
+            <div class="cert-item">
+                <i class="fas fa-check-circle" style="color:var(--accent); font-size:1.5rem"></i>
+                <div>
+                    <h4>C++ Programming</h4>
+                    <span style="font-size:0.8rem; color:#9ca3af">Cert • Completed</span>
+                </div>
+            </div>
+
+            <div class="cert-item" style="border-right-color:#f59e0b">
+                <i class="fas fa-spinner fa-spin" style="color:#f59e0b; font-size:1.5rem"></i>
+                <div>
+                    <h4>eJPTv2 Certification</h4>
+                    <span style="font-size:0.8rem; color:#f59e0b">جاري الدراسة...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hub-card" style="animation-delay: 0.2s">
+            <h3 class="hub-title"><i class="fas fa-university" style="color:#3b82f6"></i> مشاريع الجامعة</h3>
+            <table class="uni-table">
+                <thead>
+                    <tr>
+                        <th>المشروع</th>
+                        <th>المادة</th>
+                        <th>التقدير</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Crypto Research</td>
+                        <td>Security</td>
+                        <td><span class="grade-badge">A+</span></td>
+                    </tr>
+                    <tr>
+                        <td>Hospital DB</td>
+                        <td>Databases</td>
+                        <td><span class="grade-badge">A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Mobile App</td>
+                        <td>Programming</td>
+                        <td><span class="grade-badge">Done</span></td>
+                    </tr>
+                    <tr>
+                        <td>Network Design</td>
+                        <td>Networking</td>
+                        <td><span class="grade-badge">B+</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div style="max-width:800px; margin:0 auto; padding:0 20px 50px;">
+        <div class="discord-box">
+            <i class="fab fa-discord fa-4x" style="margin-bottom:15px"></i>
+            <h2>انضم لمجتمعنا على ديسكورد</h2>
+            <p style="opacity:0.9; margin:10px 0">نقاشات تقنية، تحديات CTF، وتبادل خبرات.</p>
+            <a href="https://discord.gg/YOUR_INVITE_HERE" target="_blank" class="discord-btn">Join Server Now</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

